@@ -35,15 +35,13 @@ A white background with a pastel green as the core accent, supported by a deeper
 | `--border` | Dividers, input borders | `oklch(0.9 0.015 145)` |
 | `--ring` | Focus states | `oklch(0.7 0.04 145)` |
 
-### Typography options (pick one)
+### Typography (selected)
 
-| Option | Display / headings | Body | Why it fits |
-|---|---|---|---|
-| A | **Syne** | **Plus Jakarta Sans** | Friendly, modern, clean; trustworthy without being corporate. |
-| B | **Outfit** | **Figtree** | Geometric, highly readable, contemporary local-business feel. |
-| C | **Space Grotesk** | **DM Sans** | Tech-modern, bold, excellent readability at small sizes. |
+| Display / headings | Body | Why it fits |
+|---|---|---|
+| **Outfit** | **Figtree** | Geometric, highly readable, contemporary local-business feel. |
 
-All three pairings are bold, modern, and approachable. Once the pairing is chosen, it will be loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css` with `@theme`.
+This pairing is bold, modern, and approachable. It will be loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css` with `@theme`.
 
 ### Components & interactions
 
