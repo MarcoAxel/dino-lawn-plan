@@ -2,23 +2,35 @@
 
 ## 1. Project summary
 
-A modern, responsive, static website for **Dinosaurs Landscaping**, a lawn care and landscaping company based in **Savannah, Georgia**, serving surrounding areas. The site is light-themed, mobile-first, and built for a small-business owner who wants customers to feel confident inviting the crew onto their property. All contact information, logo, and images are placeholders for the owner to swap in later.
+A modern, responsive, static website for **Dinosaurs Landscaping**, a lawn care and landscaping company based in **Savannah, Georgia**, serving surrounding areas. Light-themed, mobile-first, built so a small-business owner can confidently invite customers onto their property. Logo and photos stay as placeholders until you provide the real assets; contact info is now real.
 
 ## 2. Tech stack & hosting
 
 - **Framework:** TanStack Start (React 19 + Vite 7) on the existing template.
-- **Styling:** Tailwind CSS v4, custom semantic design tokens in `src/styles.css`.
+- **Styling:** Tailwind CSS v4, semantic design tokens in `src/styles.css`.
 - **Deployment:** Vercel free tier as a static/frontend build.
-- **Contact form:** Formspree endpoint `https://formspree.io/f/xjybkknv` wired via a plain HTML form with `POST` and `name` attributes on inputs.
-- **No backend:** No database, auth, or server functions required.
-- **No dark mode:** Light-only theme (white + pastel green palette).
-- **Images:** Stock-style placeholder URLs from Unsplash with descriptive `alt` text.
+- **Contact form:** Formspree endpoint `https://formspree.io/f/xjybkknv`, `method="POST"`, `name` attribute on every input, redirecting to a Thank You page.
+- **No backend:** no database, auth, or server functions.
+- **Light theme only.**
+- **Images:** stock-style Unsplash placeholder URLs; every image uses alt text `"Freshly cut lawn"`.
 
-## 3. Design system
+## 3. Confirmed business details
+
+| Item | Value |
+|---|---|
+| Phone | 912-677-7492 (`tel:+19126777492`) |
+| Email | dinosaurslandscaping@gmail.com |
+| Business hours | Monday – Saturday, 7:00 AM – 11:00 PM |
+| Logo | `[LOGO]` placeholder until you send the file |
+| Photos / reviews | Placeholders for now |
+
+**Service areas (final list):** Savannah, Pooler, Montgomery, Tybee Island, Port Wentworth, Port Wentworth Junction, Skidaway Island, Georgetown, Whitemarsh Island, Wilmington Island, Isle of Hope — all GA.
+
+## 4. Design system
 
 ### Color palette
 
-A white background with a pastel green as the core accent, supported by a deeper forest green and a warm earthy neutral for contrast and CTAs.
+White background anchored by a soft pastel green, with deeper forest green and a warm earthy neutral for contrast and CTAs.
 
 | Token | Role | Light value (oklch) |
 |---|---|---|
@@ -41,18 +53,17 @@ A white background with a pastel green as the core accent, supported by a deeper
 |---|---|---|
 | **Outfit** | **Figtree** | Geometric, highly readable, contemporary local-business feel. |
 
-This pairing is bold, modern, and approachable. It will be loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css` with `@theme`.
+Loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css` with `@theme`.
 
 ### Components & interactions
 
-- **Sticky header:** Logo placeholder, navigation links, "Get a Free Quote" button, and a click-to-call phone number placeholder.
-- **Mobile nav:** Hamburger menu that opens an overlay with nav links and CTAs.
-- **Buttons:** Rounded, high-contrast CTAs; primary pastel green for quote actions, secondary forest green for alternate CTAs. Subtle `hover:scale-[1.02]` and `hover:shadow-md` transitions.
-- **Cards:** Service cards, testimonial cards, and before/after cards with soft borders, consistent padding, and hover lift.
-- **Smooth scroll:** Anchor links scroll smoothly to sections; navigation links route to page routes.
-- **Form states:** Loading, success, and error states handled by Formspree's redirect/thank-you behavior plus client-side validation.
+- **Sticky header:** logo placeholder, nav links, "Get a Free Quote" button, click-to-call phone number.
+- **Mobile nav:** hamburger menu overlay with nav links and both CTAs.
+- **Buttons:** rounded, high-contrast; pastel green for quote actions, forest green for alternates. Subtle hover lift and shadow.
+- **Cards:** service, testimonial, area, and gallery cards with soft borders and hover lift.
+- **Smooth scroll** on in-page anchors; TanStack `<Link>` for page navigation.
 
-## 4. Pages & routes
+## 5. Pages & routes
 
 ```text
 /                  Home
@@ -61,176 +72,124 @@ This pairing is bold, modern, and approachable. It will be loaded via `<link>` i
 /about             About Us
 /gallery           Gallery
 /contact           Contact / Get a Quote
+/thank-you         Post-submission confirmation
+/privacy-policy    Privacy Policy
+$ (splat)          Custom 404 page
 ```
 
-All pages share the same sticky header and footer. The `src/routes/__root.tsx` head will be updated with sitewide defaults; each page will set its own `head()` title, description, canonical, and OG tags.
+### 5.1 Home (`/`)
 
-### 4.1 Home (`/`)
+1. **Hero — mobile CTA above the fold.** Lawn background image, headline "Professional Lawn Care & Landscaping in Savannah, GA", subheadline, and two large thumb-friendly buttons visible without scrolling on phones: **"Call (912) 677-7492"** (`tel:+19126777492`, separate from the form) and **"Get a Free Quote"** (`/contact`).
+2. **Intro / about blurb** with a link to `/about`.
+3. **Services overview grid** — icon cards linking to `/services` and to the matching section anchors.
+4. **Service area highlight** — full area list, links to `/service-areas`.
+5. **Testimonials** — 3 placeholder 5-star reviews.
+6. **Gallery carousel** — auto-looping carousel (Embla, already installed) driven by a folder of images.
+7. **Final CTA banner** — phone number + quote button.
 
-Sections, in order:
+**Folder-driven carousel:** images live in `src/assets/gallery/` and are picked up automatically with Vite's `import.meta.glob("../assets/gallery/*.{jpg,jpeg,png,webp}", { eager: true })`. Drop a file in the folder and it appears in the carousel; delete it and it disappears. No code edits needed. Optional subfolders `lawn-care/` and `pressure-washing/` feed the Gallery page filter tabs. Until you send real photos, the folder holds placeholder images.
 
-1. **Hero**
-   - Background image: manicured lawn / garden scene (Unsplash placeholder).
-   - Headline: "Professional Lawn Care & Landscaping in Savannah, GA".
-   - Subheadline: Locally rooted, reliable service for homeowners and businesses across Savannah and surrounding areas.
-   - Two CTAs: "Get a Free Quote" (links to `/contact`) and "Call Now" (`tel:[PHONE NUMBER]`).
-2. **Intro / About blurb**
-   - Short paragraph about trust, local roots, and pride in the work.
-   - Link to `/about`.
-3. **Services overview grid**
-   - 6–8 high-level service cards with Lucide icons and short descriptions.
-   - Link to `/services`.
-4. **Service area highlight**
-   - "Serving Savannah, Isle of Hope, Dutch Island, Pooler, Garden City, Georgetown, and Wilmington Island."
-   - Link to `/service-areas`.
-5. **Testimonials**
-   - 3 placeholder 5-star reviews with names and locations.
-6. **Before / After gallery teaser**
-   - 4–6 image grid with "Lawn Care" / "Pressure Washing" labels.
-   - Link to `/gallery`.
-7. **Final CTA banner**
-   - "Ready for a greener, cleaner yard?" with phone number and "Get a Free Quote" button.
+### 5.2 Services (`/services`)
 
-### 4.2 Services (`/services`)
+**Lawn Maintenance:** mowing, weed eating, hedge trimming, planting, fertilization, weed control, herbicide application, shrub trimming/care, sod installation, aeration, spring & fall clean up, lawn & shrub program, flower bed clean-up (weed removal, pine straw, mulch installation), roof leaf blowing/cleaning, gutter cleaning.
 
-Two categorized sections, each as a card grid:
+**Pressure Washing:** siding, driveways, fences, porches, patios.
 
-**Lawn Maintenance**
+Each service is a card with a Lucide icon, a 1–2 sentence description, and an internal link to `/contact?service=<slug>` so the quote form pre-selects that service. Page ends with a CTA banner.
 
-- Mowing
-- Weed eating
-- Hedge trimming
-- Planting
-- Fertilization
-- Weed control
-- Herbicide application
-- Shrub trimming / care
-- Sod installation
-- Aeration
-- Spring & fall clean up
-- Lawn & shrub program
-- Flower bed clean-up (weed removal, pine straw, mulch installation)
-- Roof leaf blowing / cleaning
-- Gutter cleaning
+### 5.3 Service Areas (`/service-areas`)
 
-**Pressure Washing**
-
-- Siding
-- Driveways
-- Fences
-- Porches
-- Patios
-
-Each card has a relevant Lucide icon, a 1–2 sentence description, and a subtle hover effect. Page ends with a CTA banner: phone number + "Get a Free Quote".
-
-### 4.3 Service Areas (`/service-areas`)
-
-- Hero section with a map-style placeholder image (Unsplash or SVG).
 - Savannah, GA highlighted as home base.
-- Cards or list for each surrounding area with a brief description:
-  - Isle of Hope
-  - Dutch Island
-  - Pooler
-  - Garden City
-  - Georgetown
-  - Wilmington Island
-- CTA to `/contact`.
+- Cards for each area with a short description and an internal link to `/contact`.
+- **Real embedded Google Maps iframe** centered on Savannah, GA using the keyless embed form `https://www.google.com/maps?q=Savannah,+GA&output=embed` — no API key or billing account needed. If you later want custom pins per service area, that requires a Google Maps API key and I can swap it in.
 
-### 4.4 About Us (`/about`)
+### 5.4 About Us (`/about`)
 
-- Company story section (locally owned/operated, reliable, detail-oriented — placeholder copy).
-- **Why choose us** list with icons:
-  - Licensed & insured
-  - Free quotes
-  - Reliable scheduling
-  - Satisfaction guaranteed
-  - Locally rooted in Savannah
-- Placeholder team/crew photo section.
+- Company story (locally owned/operated, reliable, detail-oriented — placeholder copy).
+- Why choose us: licensed & insured, free quotes, reliable scheduling, satisfaction guaranteed, locally rooted in Savannah.
+- Placeholder crew photo section.
 - CTA banner.
 
-### 4.5 Gallery (`/gallery`)
+### 5.5 Gallery (`/gallery`)
 
-- Filter tabs: **All**, **Lawn Care**, **Pressure Washing**.
-- Responsive image grid of before/after and completed project photos (Unsplash placeholders).
-- Each image has descriptive alt text and a subtle hover zoom.
-- CTA banner at the bottom.
+- Filter tabs: All / Lawn Care / Pressure Washing, driven by the same `src/assets/gallery/` folder structure.
+- Responsive grid with hover zoom; all alt text reads "Freshly cut lawn".
+- CTA banner.
 
-### 4.6 Contact / Get a Quote (`/contact`)
+### 5.6 Contact / Get a Quote (`/contact`)
 
-- Page headline: "Get a Free Quote".
-- Contact form (Formspree, POST):
-  - Name (input, `name="name"`, required)
-  - Phone (input, `name="phone"`, required)
-  - Email (input, `name="email"`, required)
-  - Address (input, `name="address"`)
-  - Service Needed (select dropdown, `name="service"`, all services listed)
-  - Message (textarea, `name="message"`)
-  - Submit button: "Send Message"
-- Contact info cards:
-  - Phone placeholder with `tel:` link.
-  - Email placeholder with `mailto:` link.
-  - Business hours placeholder.
-  - Embedded map placeholder for Savannah, GA.
-  - Social media icon placeholders (Facebook, Instagram, etc.) with `href="#"` for later.
+- Formspree form: Name, Phone, Email, Address, Service Needed (dropdown of all services), Message.
+- Hidden `_next` field pointing to `/thank-you` so submission redirects there.
+- Contact cards: phone (`tel:`), email (`mailto:`), business hours Mon–Sat 7 AM – 11 PM, embedded Savannah map, social icon placeholders.
 
-## 5. Global footer
+### 5.7 Thank You (`/thank-you`)
 
-Every page includes a footer with:
+- Confirmation headline, expected response time, phone button for urgent requests, links back to Home / Services / Gallery.
+- `noindex` meta so it stays out of search results.
 
-- Logo placeholder.
-- Quick links to all pages.
-- List of services (grouped or condensed).
-- List of service areas.
-- Contact info placeholders (phone, email, hours).
-- Social media icons.
-- Copyright line: "© [YEAR] Dinosaurs Landscaping. All rights reserved."
+### 5.8 Privacy Policy (`/privacy-policy`)
 
-## 6. Functionality notes
+Lawn-care-appropriate sections: information collected (name, phone, email, service address, message), how it's used (quotes, scheduling, service delivery), Formspree as the form processor, Google Analytics and cookies, no selling of personal data, photo/before-after usage on the site, data retention, your rights and how to request deletion, children's privacy, policy updates, and contact info. Written as a solid starting template — have a lawyer review before relying on it.
 
-- **Click-to-call:** All phone number elements link to `tel:[PHONE NUMBER]`.
-- **Get a Free Quote:** Repeated in header, hero, footer, and after Services sections. Always links to `/contact`.
-- **Formspree form:** Wired to `https://formspree.io/f/xjybkknv` with `method="POST"` and `name` attributes on every input.
-- **Smooth scroll:** `scroll-behavior: smooth` plus anchor handling for in-page links.
-- **Hover animations:** Subtle transforms and shadows on cards/buttons; no heavy animations.
-- **Mobile-first:** Navigation collapses into a hamburger menu; CTAs remain thumb-friendly.
-- **Accessibility:** Semantic headings, alt text on images, focus-visible outlines, color contrast checked.
+### 5.9 Custom 404
 
-## 7. SEO & local structure
+Splat route `src/routes/$.tsx` with a grass-texture background image, the company logo, "This page went out to mow", and buttons back Home and to Contact. The root `notFoundComponent` is updated to match.
 
-- Per-page `head()` with unique title, description, canonical, OG tags, and `og:type: website`.
-- Keywords naturally included in headings: "Savannah, GA", "landscaping", "lawn care", "pressure washing", and each service area.
-- Semantic HTML: `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`, proper heading hierarchy.
-- `robots.txt` and `sitemap.xml` prepared for static site (no placeholder URLs).
-- Image alt text written for lawn/landscape context.
+## 6. Global footer
 
-## 8. Placeholder summary
+Logo placeholder, quick links to every page (including Privacy Policy), service list, service-area list, phone/email/hours, social icons, copyright line.
 
-These will be clearly marked so the owner can swap them in later:
+## 7. Internal linking
 
-| Placeholder | Where it appears | Replacement method |
-|---|---|---|
-| `[LOGO]` | Header, footer | Replace image file or SVG component |
-| `[PHONE NUMBER]` | Header, hero, footer, CTAs, contact page | Replace in a central `constants.ts` or directly in components |
-| `[EMAIL]` | Footer, contact page | Replace in same constants file |
-| `[BUSINESS HOURS]` | Contact page, footer | Replace text block |
-| Social links | Footer, contact page | Replace `href="#"` with real URLs |
-| Stock images | Hero, gallery, about, service areas | Replace Unsplash URLs with real photos |
-| Company story / reviews | About, home, testimonials | Replace copy |
+Deliberate internal links so pages reinforce each other for local SEO:
 
-## 9. Implementation outline
+- Header and footer link to all pages.
+- Home links into Services, Service Areas, About, Gallery, Contact.
+- Each service card links to `/contact?service=<slug>`.
+- Service Areas cards link to `/contact`.
+- Services page cross-links to Gallery ("see this work") and Service Areas.
+- About links to Services and Contact.
+- Thank You and 404 link back to Home, Services, and Contact.
 
-1. Update `src/styles.css` with the new color tokens and chosen typography.
-2. Update `src/routes/__root.tsx` with fonts, sitewide meta, and `<Toaster />` if needed.
-3. Create a shared `src/lib/constants.ts` for phone/email/business hours placeholders.
-4. Build shared components: `Header`, `Footer`, `MobileNav`, `QuoteButton`, `PhoneLink`, `SectionHeading`, `ServiceCard`, `TestimonialCard`, `GalleryImage`, `ContactForm`.
-5. Create the 6 page routes.
-6. Add SEO meta to each route.
-7. Replace the `src/routes/index.tsx` placeholder with the Home page.
-8. Verify responsive behavior, build output, and Formspree form wiring.
-9. Provide instructions for Vercel deployment and placeholder swaps.
+## 8. SEO
 
-## 10. Open decisions before build
+- Unique `head()` per route: title, meta description, canonical, `og:title`, `og:description`, `og:type`.
+- Meta descriptions written per page, each naming Savannah, GA and the relevant service or area.
+- Semantic HTML, single `<h1>` per page, headings that mention Savannah and the surrounding areas.
+- LocalBusiness JSON-LD on the home page with name, phone, email, hours, and service area list.
+- `robots.txt` and `sitemap.xml` covering all public routes.
+- All image alt text: "Freshly cut lawn".
 
-- Choose one of the **three typography pairings** in section 3.
-- Confirm whether the gallery image count on the Home page should be 4 or 6 (plan assumes 4–6).
-- Confirm whether the Service Areas page should include an actual embedded Google Maps iframe or a stylized map placeholder (plan assumes a placeholder).
+## 9. Google Analytics — yes, I can set this up
+
+I can wire GA4 into the site. Two options:
+
+1. **Connector (easiest):** I connect the Google Analytics connector in Lovable, and the measurement ID is injected automatically — you just approve the connection card.
+2. **Manual:** you create a GA4 property at analytics.google.com, send me the Measurement ID (`G-XXXXXXXXXX`), and I hardcode the gtag snippet.
+
+Either way I'll add the gtag script plus SPA page-view tracking on route changes so every page is counted, and mention analytics cookies in the privacy policy. Tell me which route you prefer; if you don't say, I'll build with a clearly-marked `G-XXXXXXXXXX` placeholder you can swap later.
+
+## 10. What I still need from you
+
+| Item | Status |
+|---|---|
+| Company logo file | Waiting — using `[LOGO]` placeholder |
+| GA4 Measurement ID (or approval to use the connector) | Waiting — placeholder otherwise |
+| Real project photos | Waiting — placeholders in `src/assets/gallery/` |
+| Real customer reviews | Waiting — placeholder 5-star reviews |
+| Social media profile URLs | Waiting — icons link to `#` |
+| Exact street address (if you want it public) | Optional — map defaults to Savannah, GA |
+
+Everything else on your list is doable as described: custom 404, above-fold mobile call CTA, internal links, thank-you page, meta descriptions, uniform alt text, privacy policy, embedded Google Map, and the folder-driven carousel.
+
+## 11. Implementation outline
+
+1. Update `src/styles.css` with the palette and Outfit/Figtree tokens; load fonts via `<link>` in `__root.tsx`.
+2. Create `src/lib/site-config.ts` holding phone, email, hours, service list, and service areas so everything reads from one place.
+3. Create `src/assets/gallery/` (with `lawn-care/` and `pressure-washing/`) plus the glob helper.
+4. Build shared components: `Header`, `MobileNav`, `Footer`, `QuoteButton`, `CallButton`, `SectionHeading`, `ServiceCard`, `TestimonialCard`, `GalleryCarousel`, `AreaCard`, `ContactForm`, `CtaBanner`, `MapEmbed`.
+5. Replace `src/routes/index.tsx` with the Home page; add the other 7 routes plus the `$.tsx` 404.
+6. Add per-route SEO metadata and the JSON-LD block.
+7. Add analytics init + route-change page views.
+8. Write `robots.txt` and `sitemap.xml`.
+9. Verify responsive layout, above-fold mobile CTA, carousel looping, map embed, and Formspree redirect to `/thank-you`.
