@@ -74,6 +74,7 @@ Loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css
 /contact           Contact / Get a Quote
 /thank-you         Post-submission confirmation
 /privacy-policy    Privacy Policy
+/accessibility     Accessibility Statement
 $ (splat)          Custom 404 page
 ```
 
@@ -131,13 +132,23 @@ Each service is a card with a Lucide icon, a 1–2 sentence description, and an 
 
 Lawn-care-appropriate sections: information collected (name, phone, email, service address, message), how it's used (quotes, scheduling, service delivery), Formspree as the form processor, Google Analytics and cookies, no selling of personal data, photo/before-after usage on the site, data retention, your rights and how to request deletion, children's privacy, policy updates, and contact info. Written as a solid starting template — have a lawyer review before relying on it.
 
-### 5.9 Custom 404
+Analytics disclosure is explicit, not buried: a dedicated "Analytics & Cookies" section naming Google Analytics 4, the measurement ID `G-L798WTZ9CT`, what it collects (pages viewed, approximate location, device/browser, referring site), that it uses cookies, that data goes to Google, a link to Google's privacy policy and to the Google Analytics opt-out browser add-on, and how to opt out via browser settings. Effective date and last-updated date shown at the top.
+
+### 5.9 Accessibility Statement (`/accessibility`)
+
+Commitment to WCAG 2.1 AA as the target standard, measures taken (semantic HTML, keyboard navigation, visible focus states, alt text on images, sufficient color contrast, responsive text sizing), a note that the site is reviewed on an ongoing basis, known limitations placeholder, and a feedback channel with the phone number and email so anyone hitting a barrier can reach the business directly.
+
+### 5.10 Cookie / analytics notice
+
+A dismissible banner appears on first visit stating that the site uses Google Analytics cookies, with a link to the Privacy Policy and an "OK" acknowledgment stored in `localStorage`. The footer also carries a short "This site uses Google Analytics" line linking to the policy, so the disclosure exists even for visitors who dismiss the banner.
+
+### 5.11 Custom 404
 
 Splat route `src/routes/$.tsx` with a grass-texture background image, the company logo, "This page went out to mow", and buttons back Home and to Contact. The root `notFoundComponent` is updated to match.
 
 ## 6. Global footer
 
-Logo placeholder, quick links to every page (including Privacy Policy), service list, service-area list, phone/email/hours, social icons, copyright line.
+Logo placeholder, quick links to every page (including Privacy Policy and Accessibility Statement), service list, service-area list, phone/email/hours, social icons, the Google Analytics disclosure line, and the copyright line.
 
 ## 7. Internal linking
 
@@ -154,33 +165,47 @@ Deliberate internal links so pages reinforce each other for local SEO:
 ## 8. SEO
 
 - Unique `head()` per route: title, meta description, canonical, `og:title`, `og:description`, `og:type`.
+- Canonical and `og:url` use absolute URLs on `https://dinosaurslandscaping.com`, and `sitemap.xml` uses the same base.
 - Meta descriptions written per page, each naming Savannah, GA and the relevant service or area.
 - Semantic HTML, single `<h1>` per page, headings that mention Savannah and the surrounding areas.
 - LocalBusiness JSON-LD on the home page with name, phone, email, hours, and service area list.
 - `robots.txt` and `sitemap.xml` covering all public routes.
 - All image alt text: "Freshly cut lawn".
 
-## 9. Google Analytics — yes, I can set this up
+## 9. Google Analytics
 
-I can wire GA4 into the site. Two options:
+GA4 property `G-L798WTZ9CT` is wired in directly:
 
-1. **Connector (easiest):** I connect the Google Analytics connector in Lovable, and the measurement ID is injected automatically — you just approve the connection card.
-2. **Manual:** you create a GA4 property at analytics.google.com, send me the Measurement ID (`G-XXXXXXXXXX`), and I hardcode the gtag snippet.
+- The `gtag.js` script is loaded from the root route head so it runs on every page.
+- A route-change listener sends a `page_view` event on client-side navigation, since gtag only auto-tracks the first load.
+- Disclosure is handled in three places: the cookie/analytics banner, the footer line, and the Privacy Policy's Analytics & Cookies section.
 
-Either way I'll add the gtag script plus SPA page-view tracking on route changes so every page is counted, and mention analytics cookies in the privacy policy. Tell me which route you prefer; if you don't say, I'll build with a clearly-marked `G-XXXXXXXXXX` placeholder you can swap later.
+## 9a. Domain: dinosaurslandscaping.com (Wix registrar, Vercel hosting)
+
+The domain is registered at Wix but the site is hosted on Vercel, so the domain needs to point at Vercel. After the build, the steps are:
+
+1. In Vercel, open the project, go to Settings → Domains, and add both `dinosaurslandscaping.com` and `www.dinosaurslandscaping.com`. Vercel then shows the exact records to create.
+2. In the Wix account, open Domains → your domain → Advanced → Edit DNS (Wix calls this "Connect a domain you own" / DNS records).
+3. Add an `A` record for the root `@` pointing to Vercel's IP (`76.76.21.21`), and a `CNAME` record for `www` pointing to `cname.vercel-dns.com`. Use whatever values Vercel displays — they are authoritative.
+4. Leave any MX records alone so email keeps working.
+5. Wait for propagation (usually under an hour, up to 48 hours) and confirm Vercel marks both domains Valid; Vercel issues the SSL certificate automatically.
+
+Alternative: point Wix's nameservers at Vercel instead of adding individual records. The A/CNAME route is safer if anything else uses the domain.
+
+I can't log into Wix or Vercel on your behalf, so those DNS changes are yours to make — but the site code will already use the final domain in canonical tags, `og:url`, and the sitemap.
 
 ## 10. What I still need from you
 
 | Item | Status |
 |---|---|
 | Company logo file | Waiting — using `[LOGO]` placeholder |
-| GA4 Measurement ID (or approval to use the connector) | Waiting — placeholder otherwise |
+| GA4 Measurement ID | Received — `G-L798WTZ9CT` |
 | Real project photos | Waiting — placeholders in `src/assets/gallery/` |
 | Real customer reviews | Waiting — placeholder 5-star reviews |
 | Social media profile URLs | Waiting — icons link to `#` |
 | Exact street address (if you want it public) | Optional — map defaults to Savannah, GA |
 
-Everything else on your list is doable as described: custom 404, above-fold mobile call CTA, internal links, thank-you page, meta descriptions, uniform alt text, privacy policy, embedded Google Map, and the folder-driven carousel.
+Everything else on your list is doable as described: custom 404, above-fold mobile call CTA, internal links, thank-you page, meta descriptions, uniform alt text, privacy policy, accessibility statement, analytics disclosure, embedded Google Map, and the folder-driven carousel.
 
 ## 11. Implementation outline
 
@@ -188,8 +213,9 @@ Everything else on your list is doable as described: custom 404, above-fold mobi
 2. Create `src/lib/site-config.ts` holding phone, email, hours, service list, and service areas so everything reads from one place.
 3. Create `src/assets/gallery/` (with `lawn-care/` and `pressure-washing/`) plus the glob helper.
 4. Build shared components: `Header`, `MobileNav`, `Footer`, `QuoteButton`, `CallButton`, `SectionHeading`, `ServiceCard`, `TestimonialCard`, `GalleryCarousel`, `AreaCard`, `ContactForm`, `CtaBanner`, `MapEmbed`.
-5. Replace `src/routes/index.tsx` with the Home page; add the other 7 routes plus the `$.tsx` 404.
+5. Replace `src/routes/index.tsx` with the Home page; add the other routes (Services, Service Areas, About, Gallery, Contact, Thank You, Privacy Policy, Accessibility) plus the `$.tsx` 404.
 6. Add per-route SEO metadata and the JSON-LD block.
-7. Add analytics init + route-change page views.
-8. Write `robots.txt` and `sitemap.xml`.
-9. Verify responsive layout, above-fold mobile CTA, carousel looping, map embed, and Formspree redirect to `/thank-you`.
+7. Add the GA4 gtag script, route-change page views, and the cookie/analytics banner.
+8. Write `robots.txt` and `sitemap.xml` using `https://dinosaurslandscaping.com` as the base URL.
+9. Verify responsive layout, above-fold mobile CTA, carousel looping, map embed, banner dismissal, and Formspree redirect to `/thank-you`.
+10. Hand off the Wix → Vercel DNS steps in section 9a.
