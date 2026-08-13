@@ -2,7 +2,7 @@
 
 ## 1. Project summary
 
-A modern, responsive, static website for **Dinosaurs Landscaping**, a lawn care and landscaping company based in **Savannah, Georgia**, serving surrounding areas. Light-themed, mobile-first, built so a small-business owner can confidently invite customers onto their property. Logo and photos stay as placeholders until you provide the real assets; contact info is now real.
+A modern, responsive, static website for **Dinosaurs Landscaping**, a lawn care and landscaping company based in **Savannah, Georgia**, serving surrounding areas. Light-themed, mobile-first, built so a small-business owner can confidently invite customers onto their property. Photos and reviews stay as placeholders until you provide the real assets; contact info and logo are now real.
 
 ## 2. Tech stack & hosting
 
@@ -17,11 +17,11 @@ A modern, responsive, static website for **Dinosaurs Landscaping**, a lawn care 
 ## 3. Confirmed business details
 
 | Item | Value |
-|---|---|
+|---|---|---|
 | Phone | 912-677-7492 (`tel:+19126777492`) |
 | Email | dinosaurslandscaping@gmail.com |
 | Business hours | Monday – Saturday, 7:00 AM – 11:00 PM |
-| Logo | `[LOGO]` placeholder until you send the file |
+| Logo | Received — black dinosaur/tree mark with "DINOSAUR LANDSCAPING" wordmark |
 | Photos / reviews | Placeholders for now |
 
 **Service areas (final list):** Savannah, Pooler, Montgomery, Tybee Island, Port Wentworth, Port Wentworth Junction, Skidaway Island, Georgetown, Whitemarsh Island, Wilmington Island, Isle of Hope — all GA.
@@ -63,7 +63,19 @@ Loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css
 - **Cards:** service, testimonial, area, and gallery cards with soft borders and hover lift.
 - **Smooth scroll** on in-page anchors; TanStack `<Link>` for page navigation.
 
-## 5. Pages & routes
+## 5. Logo format
+
+The PDF logo is workable and has already been converted to an **SVG with a transparent background**. SVG is the best format for the site because it stays crisp at any size (header, footer, 404 page, favicon source) and the white background is gone, so only the black mark and wordmark show.
+
+What I'll do with it during the build:
+
+- Save the SVG as the site logo and use it in the header, footer, and custom 404 page.
+- Generate a square favicon from the mark (resize + pad, never ship the full-size source) and place it in `public/favicon.png`.
+- Update `src/routes/__root.tsx` to point at the new favicon and remove the default `public/favicon.ico`.
+
+If you ever need a different color version (for example a white knockout logo on dark sections), let me know and I can create that from the same source.
+
+## 6. Pages & routes
 
 ```text
 /                  Home
@@ -78,7 +90,7 @@ Loaded via `<link>` in `src/routes/__root.tsx` and registered in `src/styles.css
 $ (splat)          Custom 404 page
 ```
 
-### 5.1 Home (`/`)
+### 6.1 Home (`/`)
 
 1. **Hero — mobile CTA above the fold.** Lawn background image, headline "Professional Lawn Care & Landscaping in Savannah, GA", subheadline, and two large thumb-friendly buttons visible without scrolling on phones: **"Call (912) 677-7492"** (`tel:+19126777492`, separate from the form) and **"Get a Free Quote"** (`/contact`).
 2. **Intro / about blurb** with a link to `/about`.
@@ -90,7 +102,7 @@ $ (splat)          Custom 404 page
 
 **Folder-driven carousel:** images live in `src/assets/gallery/` and are picked up automatically with Vite's `import.meta.glob("../assets/gallery/*.{jpg,jpeg,png,webp}", { eager: true })`. Drop a file in the folder and it appears in the carousel; delete it and it disappears. No code edits needed. Optional subfolders `lawn-care/` and `pressure-washing/` feed the Gallery page filter tabs. Until you send real photos, the folder holds placeholder images.
 
-### 5.2 Services (`/services`)
+### 6.2 Services (`/services`)
 
 **Lawn Maintenance:** mowing, weed eating, hedge trimming, planting, fertilization, weed control, herbicide application, shrub trimming/care, sod installation, aeration, spring & fall clean up, lawn & shrub program, flower bed clean-up (weed removal, pine straw, mulch installation), roof leaf blowing/cleaning, gutter cleaning.
 
@@ -98,59 +110,59 @@ $ (splat)          Custom 404 page
 
 Each service is a card with a Lucide icon, a 1–2 sentence description, and an internal link to `/contact?service=<slug>` so the quote form pre-selects that service. Page ends with a CTA banner.
 
-### 5.3 Service Areas (`/service-areas`)
+### 6.3 Service Areas (`/service-areas`)
 
 - Savannah, GA highlighted as home base.
 - Cards for each area with a short description and an internal link to `/contact`.
 - **Real embedded Google Maps iframe** centered on Savannah, GA using the keyless embed form `https://www.google.com/maps?q=Savannah,+GA&output=embed` — no API key or billing account needed. If you later want custom pins per service area, that requires a Google Maps API key and I can swap it in.
 
-### 5.4 About Us (`/about`)
+### 6.4 About Us (`/about`)
 
 - Company story (locally owned/operated, reliable, detail-oriented — placeholder copy).
 - Why choose us: licensed & insured, free quotes, reliable scheduling, satisfaction guaranteed, locally rooted in Savannah.
 - Placeholder crew photo section.
 - CTA banner.
 
-### 5.5 Gallery (`/gallery`)
+### 6.5 Gallery (`/gallery`)
 
 - Filter tabs: All / Lawn Care / Pressure Washing, driven by the same `src/assets/gallery/` folder structure.
 - Responsive grid with hover zoom; all alt text reads "Freshly cut lawn".
 - CTA banner.
 
-### 5.6 Contact / Get a Quote (`/contact`)
+### 6.6 Contact / Get a Quote (`/contact`)
 
 - Formspree form: Name, Phone, Email, Address, Service Needed (dropdown of all services), Message.
 - Hidden `_next` field pointing to `/thank-you` so submission redirects there.
 - Contact cards: phone (`tel:`), email (`mailto:`), business hours Mon–Sat 7 AM – 11 PM, embedded Savannah map, social icon placeholders.
 
-### 5.7 Thank You (`/thank-you`)
+### 6.7 Thank You (`/thank-you`)
 
 - Confirmation headline, expected response time, phone button for urgent requests, links back to Home / Services / Gallery.
 - `noindex` meta so it stays out of search results.
 
-### 5.8 Privacy Policy (`/privacy-policy`)
+### 6.8 Privacy Policy (`/privacy-policy`)
 
 Lawn-care-appropriate sections: information collected (name, phone, email, service address, message), how it's used (quotes, scheduling, service delivery), Formspree as the form processor, Google Analytics and cookies, no selling of personal data, photo/before-after usage on the site, data retention, your rights and how to request deletion, children's privacy, policy updates, and contact info. Written as a solid starting template — have a lawyer review before relying on it.
 
 Analytics disclosure is explicit, not buried: a dedicated "Analytics & Cookies" section naming Google Analytics 4, the measurement ID `G-L798WTZ9CT`, what it collects (pages viewed, approximate location, device/browser, referring site), that it uses cookies, that data goes to Google, a link to Google's privacy policy and to the Google Analytics opt-out browser add-on, and how to opt out via browser settings. Effective date and last-updated date shown at the top.
 
-### 5.9 Accessibility Statement (`/accessibility`)
+### 6.9 Accessibility Statement (`/accessibility`)
 
 Commitment to WCAG 2.1 AA as the target standard, measures taken (semantic HTML, keyboard navigation, visible focus states, alt text on images, sufficient color contrast, responsive text sizing), a note that the site is reviewed on an ongoing basis, known limitations placeholder, and a feedback channel with the phone number and email so anyone hitting a barrier can reach the business directly.
 
-### 5.10 Cookie / analytics notice
+### 6.10 Cookie / analytics notice
 
 A dismissible banner appears on first visit stating that the site uses Google Analytics cookies, with a link to the Privacy Policy and an "OK" acknowledgment stored in `localStorage`. The footer also carries a short "This site uses Google Analytics" line linking to the policy, so the disclosure exists even for visitors who dismiss the banner.
 
-### 5.11 Custom 404
+### 6.11 Custom 404
 
 Splat route `src/routes/$.tsx` with a grass-texture background image, the company logo, "This page went out to mow", and buttons back Home and to Contact. The root `notFoundComponent` is updated to match.
 
-## 6. Global footer
+## 7. Global footer
 
 Logo placeholder, quick links to every page (including Privacy Policy and Accessibility Statement), service list, service-area list, phone/email/hours, social icons, the Google Analytics disclosure line, and the copyright line.
 
-## 7. Internal linking
+## 8. Internal linking
 
 Deliberate internal links so pages reinforce each other for local SEO:
 
@@ -162,7 +174,7 @@ Deliberate internal links so pages reinforce each other for local SEO:
 - About links to Services and Contact.
 - Thank You and 404 link back to Home, Services, and Contact.
 
-## 8. SEO
+## 9. SEO
 
 - Unique `head()` per route: title, meta description, canonical, `og:title`, `og:description`, `og:type`.
 - Canonical and `og:url` use absolute URLs on `https://dinosaurslandscaping.com`, and `sitemap.xml` uses the same base.
@@ -172,7 +184,7 @@ Deliberate internal links so pages reinforce each other for local SEO:
 - `robots.txt` and `sitemap.xml` covering all public routes.
 - All image alt text: "Freshly cut lawn".
 
-## 9. Google Analytics
+## 10. Google Analytics
 
 GA4 property `G-L798WTZ9CT` is wired in directly:
 
@@ -180,7 +192,7 @@ GA4 property `G-L798WTZ9CT` is wired in directly:
 - A route-change listener sends a `page_view` event on client-side navigation, since gtag only auto-tracks the first load.
 - Disclosure is handled in three places: the cookie/analytics banner, the footer line, and the Privacy Policy's Analytics & Cookies section.
 
-## 9a. Domain: dinosaurslandscaping.com (Wix registrar, Vercel hosting)
+## 10a. Domain: dinosaurslandscaping.com (Wix registrar, Vercel hosting)
 
 The domain is registered at Wix but the site is hosted on Vercel, so the domain needs to point at Vercel. After the build, the steps are:
 
@@ -194,12 +206,10 @@ Alternative: point Wix's nameservers at Vercel instead of adding individual reco
 
 I can't log into Wix or Vercel on your behalf, so those DNS changes are yours to make — but the site code will already use the final domain in canonical tags, `og:url`, and the sitemap.
 
-## 10. What I still need from you
+## 11. What I still need from you
 
 | Item | Status |
-|---|---|
-| Company logo file | Waiting — using `[LOGO]` placeholder |
-| GA4 Measurement ID | Received — `G-L798WTZ9CT` |
+|---|---|---|
 | Real project photos | Waiting — placeholders in `src/assets/gallery/` |
 | Real customer reviews | Waiting — placeholder 5-star reviews |
 | Social media profile URLs | Waiting — icons link to `#` |
@@ -207,15 +217,16 @@ I can't log into Wix or Vercel on your behalf, so those DNS changes are yours to
 
 Everything else on your list is doable as described: custom 404, above-fold mobile call CTA, internal links, thank-you page, meta descriptions, uniform alt text, privacy policy, accessibility statement, analytics disclosure, embedded Google Map, and the folder-driven carousel.
 
-## 11. Implementation outline
+## 12. Implementation outline
 
 1. Update `src/styles.css` with the palette and Outfit/Figtree tokens; load fonts via `<link>` in `__root.tsx`.
 2. Create `src/lib/site-config.ts` holding phone, email, hours, service list, and service areas so everything reads from one place.
 3. Create `src/assets/gallery/` (with `lawn-care/` and `pressure-washing/`) plus the glob helper.
-4. Build shared components: `Header`, `MobileNav`, `Footer`, `QuoteButton`, `CallButton`, `SectionHeading`, `ServiceCard`, `TestimonialCard`, `GalleryCarousel`, `AreaCard`, `ContactForm`, `CtaBanner`, `MapEmbed`.
-5. Replace `src/routes/index.tsx` with the Home page; add the other routes (Services, Service Areas, About, Gallery, Contact, Thank You, Privacy Policy, Accessibility) plus the `$.tsx` 404.
-6. Add per-route SEO metadata and the JSON-LD block.
-7. Add the GA4 gtag script, route-change page views, and the cookie/analytics banner.
-8. Write `robots.txt` and `sitemap.xml` using `https://dinosaurslandscaping.com` as the base URL.
-9. Verify responsive layout, above-fold mobile CTA, carousel looping, map embed, banner dismissal, and Formspree redirect to `/thank-you`.
-10. Hand off the Wix → Vercel DNS steps in section 9a.
+4. Add the logo SVG and generated favicon to the project.
+5. Build shared components: `Header`, `MobileNav`, `Footer`, `QuoteButton`, `CallButton`, `SectionHeading`, `ServiceCard`, `TestimonialCard`, `GalleryCarousel`, `AreaCard`, `ContactForm`, `CtaBanner`, `MapEmbed`.
+6. Replace `src/routes/index.tsx` with the Home page; add the other routes (Services, Service Areas, About, Gallery, Contact, Thank You, Privacy Policy, Accessibility) plus the `$.tsx` 404.
+7. Add per-route SEO metadata and the JSON-LD block.
+8. Add the GA4 gtag script, route-change page views, and the cookie/analytics banner.
+9. Write `robots.txt` and `sitemap.xml` using `https://dinosaurslandscaping.com` as the base URL.
+10. Verify responsive layout, above-fold mobile CTA, carousel looping, map embed, banner dismissal, and Formspree redirect to `/thank-you`.
+11. Hand off the Wix → Vercel DNS steps in section 10a.
