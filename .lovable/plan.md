@@ -100,7 +100,9 @@ $ (splat)          Custom 404 page
 6. **Gallery carousel** — auto-looping carousel (Embla, already installed) driven by a folder of images.
 7. **Final CTA banner** — phone number + quote button.
 
-**Folder-driven carousel:** images live in `src/assets/gallery/` and are picked up automatically with Vite's `import.meta.glob("../assets/gallery/*.{jpg,jpeg,png,webp}", { eager: true })`. Drop a file in the folder and it appears in the carousel; delete it and it disappears. No code edits needed. Optional subfolders `lawn-care/` and `pressure-washing/` feed the Gallery page filter tabs. Until you send real photos, the folder holds placeholder images.
+**Folder-driven carousel:** images live in `src/assets/gallery/` and are picked up automatically with Vite's `import.meta.glob("../assets/gallery/*.{jpg,jpeg,png,webp}", { eager: true })`. Drop a file in the folder and it appears in the carousel; delete it and it disappears. No code edits needed. Subfolders `lawn-care/` and `pressure-washing/` feed the Gallery page filter tabs.
+
+**Your four real photos (received).** The upload contains 4 iPhone HEIC files (`IMG_4965`, `IMG_5287`, `IMG_5299`, `IMG_5302`). Browsers can't display HEIC, so each gets converted to a web-optimized JPEG (max ~1600px on the long edge, quality tuned for fast mobile loading) and placed in `src/assets/gallery/lawn-care/`. They feed both the Home carousel and the Gallery page, all with the alt text "Freshly cut lawn". If any of the four is actually a pressure-washing job, tell me and I'll move it into `pressure-washing/` so the filter tabs stay accurate. Stock placeholders fill the `pressure-washing/` folder until you send real ones.
 
 ### 6.2 Services (`/services`)
 
@@ -210,10 +212,11 @@ I can't log into Wix or Vercel on your behalf, so those DNS changes are yours to
 
 | Item | Status |
 |---|---|---|
-| Real project photos | Waiting — placeholders in `src/assets/gallery/` |
+| Real lawn-care photos | Received — 4 photos, converted from HEIC to JPEG |
+| Real pressure-washing photos | Waiting — stock placeholders for now |
 | Real customer reviews | Waiting — placeholder 5-star reviews |
-| Social media profile URLs | Waiting — icons link to `#` |
-| Exact street address (if you want it public) | Optional — map defaults to Savannah, GA |
+| Social media profile URLs | Placeholder for now — Facebook and Instagram icons shown, linking to `#`, easy to swap in later |
+| Public address | Settled — "Savannah, Georgia" only, no street address; map centers on Savannah, GA |
 
 Everything else on your list is doable as described: custom 404, above-fold mobile call CTA, internal links, thank-you page, meta descriptions, uniform alt text, privacy policy, accessibility statement, analytics disclosure, embedded Google Map, and the folder-driven carousel.
 
