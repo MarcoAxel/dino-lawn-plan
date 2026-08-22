@@ -160,6 +160,18 @@ A dismissible banner appears on first visit stating that the site uses Google An
 
 Splat route `src/routes/$.tsx` with a grass-texture background image, the company logo, "This page went out to mow", and buttons back Home and to Contact. The root `notFoundComponent` is updated to match.
 
+### 6.12 Reviews (Google-Maps style)
+
+A reviews section on the Home page styled to look like Google Business Profile reviews, so it reads as familiar and credible:
+
+- Header row: a large `5.0`, five filled gold stars, "Based on X Google reviews", and the Google "G" mark treated tastefully so it's clearly a nod to Google reviews without misusing their branding.
+- Three to four review cards, each with a circular colored initial avatar (the way Google renders reviewers without photos), a reviewer name, a "Local Guide · N reviews" style subline, five gold stars, a relative date ("2 weeks ago"), and 2–3 sentences of review text mentioning specific services and Savannah-area neighborhoods.
+- Every review is clearly marked in the code as placeholder content in one array — `src/lib/reviews.ts` — with a comment explaining exactly how to swap in real names, dates, and text. No code changes needed beyond editing that one file.
+- A **"See more reviews on Google"** button linking to `https://maps.app.goo.gl/ERJdyaEstwK3RkRH7`, opening in a new tab with `rel="noopener noreferrer"`. The same link appears in the footer.
+
+Two honest notes: I can't pull reviews automatically from your Google Business Profile — that needs the Google Places API with a billing-enabled key, and it only ever returns up to 5 reviews. Once you have real reviews, hand-entering them in `src/lib/reviews.ts` is the simpler and free path, and I can wire up the API later if you'd rather have them live. Also, I won't mark up placeholder reviews with `AggregateRating` JSON-LD — publishing fake review structured data violates Google's policies and can get the site penalized. Once the reviews are real, I'll add that markup so the star rating can show in search results.
+
+
 ## 7. Global footer
 
 Logo placeholder, quick links to every page (including Privacy Policy and Accessibility Statement), service list, service-area list, phone/email/hours, social icons, the Google Analytics disclosure line, and the copyright line.
@@ -188,11 +200,26 @@ Deliberate internal links so pages reinforce each other for local SEO:
 
 ## 10. Google Analytics
 
-GA4 property `G-L798WTZ9CT` is wired in directly:
+GA4 property `G-L798WTZ9CT` is wired in:
 
-- The `gtag.js` script is loaded from the root route head so it runs on every page.
+- The `gtag.js` script loads on every page, with the measurement ID read from an environment variable (see section 10b) rather than hard-coded.
 - A route-change listener sends a `page_view` event on client-side navigation, since gtag only auto-tracks the first load.
 - Disclosure is handled in three places: the cookie/analytics banner, the footer line, and the Privacy Policy's Analytics & Cookies section.
+
+## 10b. Secrets, IDs, and what the public can see
+
+Short answer to your question: **a Google Analytics measurement ID is not a secret and cannot be hidden.** Any GA4 ID (`G-...`) must be sent by the visitor's browser for tracking to work, so it is visible in the page source of every GA-tracked site on the internet. That's by design and it's safe — the ID only lets someone send data *into* your property; it grants no access to your reports or your Google account. The same goes for the Formspree form ID and the Google Maps embed URL: public by nature.
+
+What genuinely must stay private would be an API key with billing attached, a private server key, or an email password. This site uses none of those — it's a static frontend with no backend, so there is nothing that could leak.
+
+Even so, the plan keeps configuration out of the source code so you can manage it in Vercel:
+
+- `src/lib/site-config.ts` reads the GA ID, Formspree endpoint, reviews link, phone, and email from `import.meta.env.VITE_*` variables, with the known values as fallbacks so the site still works if a variable isn't set.
+- A committed `.env.example` documents every variable and what it's for.
+- A git-ignored `.env` holds the real values for local development.
+- In Vercel: Project → Settings → Environment Variables, add each `VITE_...` variable for Production and Preview, then redeploy. I'll list the exact names to paste once the build is done.
+
+One caveat so nothing surprises you later: **anything prefixed `VITE_` is compiled into the browser bundle and is therefore public.** Vercel environment variables let you change values without editing code — they are not a hiding place. If you ever add something that must truly stay private (a paid API key, for example), it needs a server-side function, and I'll flag it at that point rather than putting it in a `VITE_` variable.
 
 ## 10a. Domain: dinosaurslandscaping.com (Wix registrar, Vercel hosting)
 
@@ -214,7 +241,8 @@ I can't log into Wix or Vercel on your behalf, so those DNS changes are yours to
 |---|---|---|
 | Real lawn-care photos | Received — 4 photos, converted from HEIC to JPEG |
 | Real pressure-washing photos | Waiting — stock placeholders for now |
-| Real customer reviews | Waiting — placeholder 5-star reviews |
+| Real customer reviews | Waiting — Google-style placeholder 5-star reviews in `src/lib/reviews.ts`, easy to swap |
+| Google reviews link | Received — `https://maps.app.goo.gl/ERJdyaEstwK3RkRH7` |
 | Social media profile URLs | Placeholder for now — Facebook and Instagram icons shown, linking to `#`, easy to swap in later |
 | Public address | Settled — "Savannah, Georgia" only, no street address; map centers on Savannah, GA |
 
