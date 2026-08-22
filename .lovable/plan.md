@@ -188,11 +188,26 @@ Deliberate internal links so pages reinforce each other for local SEO:
 
 ## 10. Google Analytics
 
-GA4 property `G-L798WTZ9CT` is wired in directly:
+GA4 property `G-L798WTZ9CT` is wired in:
 
-- The `gtag.js` script is loaded from the root route head so it runs on every page.
+- The `gtag.js` script loads on every page, with the measurement ID read from an environment variable (see section 10b) rather than hard-coded.
 - A route-change listener sends a `page_view` event on client-side navigation, since gtag only auto-tracks the first load.
 - Disclosure is handled in three places: the cookie/analytics banner, the footer line, and the Privacy Policy's Analytics & Cookies section.
+
+## 10b. Secrets, IDs, and what the public can see
+
+Short answer to your question: **a Google Analytics measurement ID is not a secret and cannot be hidden.** Any GA4 ID (`G-...`) must be sent by the visitor's browser for tracking to work, so it is visible in the page source of every GA-tracked site on the internet. That's by design and it's safe — the ID only lets someone send data *into* your property; it grants no access to your reports or your Google account. The same goes for the Formspree form ID and the Google Maps embed URL: public by nature.
+
+What genuinely must stay private would be an API key with billing attached, a private server key, or an email password. This site uses none of those — it's a static frontend with no backend, so there is nothing that could leak.
+
+Even so, the plan keeps configuration out of the source code so you can manage it in Vercel:
+
+- `src/lib/site-config.ts` reads the GA ID, Formspree endpoint, reviews link, phone, and email from `import.meta.env.VITE_*` variables, with the known values as fallbacks so the site still works if a variable isn't set.
+- A committed `.env.example` documents every variable and what it's for.
+- A git-ignored `.env` holds the real values for local development.
+- In Vercel: Project → Settings → Environment Variables, add each `VITE_...` variable for Production and Preview, then redeploy. I'll list the exact names to paste once the build is done.
+
+One caveat so nothing surprises you later: **anything prefixed `VITE_` is compiled into the browser bundle and is therefore public.** Vercel environment variables let you change values without editing code — they are not a hiding place. If you ever add something that must truly stay private (a paid API key, for example), it needs a server-side function, and I'll flag it at that point rather than putting it in a `VITE_` variable.
 
 ## 10a. Domain: dinosaurslandscaping.com (Wix registrar, Vercel hosting)
 
