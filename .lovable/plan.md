@@ -160,6 +160,18 @@ A dismissible banner appears on first visit stating that the site uses Google An
 
 Splat route `src/routes/$.tsx` with a grass-texture background image, the company logo, "This page went out to mow", and buttons back Home and to Contact. The root `notFoundComponent` is updated to match.
 
+### 6.12 Reviews (Google-Maps style)
+
+A reviews section on the Home page styled to look like Google Business Profile reviews, so it reads as familiar and credible:
+
+- Header row: a large `5.0`, five filled gold stars, "Based on X Google reviews", and the Google "G" mark treated tastefully so it's clearly a nod to Google reviews without misusing their branding.
+- Three to four review cards, each with a circular colored initial avatar (the way Google renders reviewers without photos), a reviewer name, a "Local Guide · N reviews" style subline, five gold stars, a relative date ("2 weeks ago"), and 2–3 sentences of review text mentioning specific services and Savannah-area neighborhoods.
+- Every review is clearly marked in the code as placeholder content in one array — `src/lib/reviews.ts` — with a comment explaining exactly how to swap in real names, dates, and text. No code changes needed beyond editing that one file.
+- A **"See more reviews on Google"** button linking to `https://maps.app.goo.gl/ERJdyaEstwK3RkRH7`, opening in a new tab with `rel="noopener noreferrer"`. The same link appears in the footer.
+
+Two honest notes: I can't pull reviews automatically from your Google Business Profile — that needs the Google Places API with a billing-enabled key, and it only ever returns up to 5 reviews. Once you have real reviews, hand-entering them in `src/lib/reviews.ts` is the simpler and free path, and I can wire up the API later if you'd rather have them live. Also, I won't mark up placeholder reviews with `AggregateRating` JSON-LD — publishing fake review structured data violates Google's policies and can get the site penalized. Once the reviews are real, I'll add that markup so the star rating can show in search results.
+
+
 ## 7. Global footer
 
 Logo placeholder, quick links to every page (including Privacy Policy and Accessibility Statement), service list, service-area list, phone/email/hours, social icons, the Google Analytics disclosure line, and the copyright line.
