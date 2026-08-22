@@ -241,7 +241,8 @@ I can't log into Wix or Vercel on your behalf, so those DNS changes are yours to
 |---|---|---|
 | Real lawn-care photos | Received — 4 photos, converted from HEIC to JPEG |
 | Real pressure-washing photos | Waiting — stock placeholders for now |
-| Real customer reviews | Waiting — placeholder 5-star reviews |
+| Real customer reviews | Waiting — Google-style placeholder 5-star reviews in `src/lib/reviews.ts`, easy to swap |
+| Google reviews link | Received — `https://maps.app.goo.gl/ERJdyaEstwK3RkRH7` |
 | Social media profile URLs | Placeholder for now — Facebook and Instagram icons shown, linking to `#`, easy to swap in later |
 | Public address | Settled — "Savannah, Georgia" only, no street address; map centers on Savannah, GA |
 
