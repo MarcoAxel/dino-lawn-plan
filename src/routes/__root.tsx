@@ -11,6 +11,12 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { CookieBanner } from "@/components/site/CookieBanner";
+import { LOCAL_BUSINESS_SCHEMA } from "@/lib/structured-data";
+import { trackPageView } from "@/lib/analytics";
+import { useRouterState } from "@tanstack/react-router";
 
 function NotFoundComponent() {
   return (
