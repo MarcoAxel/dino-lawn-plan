@@ -69,7 +69,7 @@ function Home() {
               />
             </div>
             <p className="mt-4 text-sm text-forest-foreground/70">
-              Licensed &amp; insured · Free quotes · {BUSINESS.hours}
+              Licensed · Free quotes · {BUSINESS.hours}
             </p>
           </div>
         </div>
@@ -92,7 +92,7 @@ function Home() {
             </p>
             <ul className="mt-6 space-y-3">
               {[
-                "Licensed & insured, with free on-site quotes",
+                "Insured, with free on-site quotes",
                 "Consistent weekly, bi-weekly and monthly scheduling",
                 "Clean edges, blown-off hardscapes, debris hauled away",
               ].map((item) => (
