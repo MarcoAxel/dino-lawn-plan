@@ -19,9 +19,11 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-md">
       <div className="container-page flex h-18 items-center justify-between gap-4 py-3">
-        <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <img src="/logo.svg" alt="Freshly cut lawn" className="h-11 w-auto" />
-          <span className="sr-only">{BUSINESS.name}</span>
+        <Link to="/" className="flex items-center gap-2.5 min-w-0" onClick={() => setOpen(false)}>
+          <img src="/logo.svg" alt="Freshly cut lawn" className="h-11 w-auto shrink-0" />
+          <span className="truncate text-lg font-bold tracking-tight uppercase text-forest sm:text-xl">
+            DINOSAURS LANDSCAPING
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
