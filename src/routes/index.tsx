@@ -92,7 +92,7 @@ function Home() {
             </p>
             <ul className="mt-6 space-y-3">
               {[
-                "Insured, with free on-site quotes",
+                "Licensed, with free on-site quotes",
                 "Consistent weekly, bi-weekly and monthly scheduling",
                 "Clean edges, blown-off hardscapes, debris hauled away",
               ].map((item) => (
